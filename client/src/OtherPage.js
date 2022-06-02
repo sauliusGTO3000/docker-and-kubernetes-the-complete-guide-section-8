@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default () => {
+const otherPage = () => {
     return (
         <div>
             This is another page!
-            <link to="/"> back to homepage </link>
+            <Link to="/"> back to homepage </Link>
         </div>
     );
-};
+}
+
+export default otherPage;
