@@ -21,8 +21,8 @@ const pgClient = new Pool({
 
 pgClient.on("connect", (client) => {
         client
-            .query("CREATE TABLE IF NOT EXIST values (number INT)")
-            .catch(err => console.log(err));
+            .query("CREATE TABLE IF NOT EXISTS values (number INT)")
+            .catch(err => console.error(err));
 });
 
 // Express route handlers
@@ -42,12 +42,12 @@ const redisClient = redis.createClient({
 const redisPublisher = redisClient.duplicate();
 
 app.get('/values/all', async (req, res) => {
-   const values = await pgClient.query('SELECT * FROM values');
+   const values = await pgClient.query('SELECT * from values');
    res.send(values.rows);
 });
 
 app.get('/values/current', async (req, res) => {
-    redis.client.hgetall('values', (err, rvalues) => {
+    redisClient.hgetall('values', (err, rvalues) => {
         res.send(values);
     });
 });
@@ -56,7 +56,8 @@ app.post('/values', async (req, res) => {
    const index = parseInt(req.body.index);
 
    if (index > 40) {
-       res.status(422).send('only indexes less than 40 are supported');
+     return res.status(422).send('only indexes less than 40 are supported');
+   }
 
        redisClient.hset('values', index, 'Nothing yet!');
        redisPublisher.publish('insert', index);

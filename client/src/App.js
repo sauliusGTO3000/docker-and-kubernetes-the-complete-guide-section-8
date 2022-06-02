@@ -1,9 +1,10 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { BrowserRouter as Router, route, Link } from 'react-router-dom';
-import OtherPage from "./OtherPage";
-import fib from "./Fib";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import OtherPage from './OtherPage';
+import fib from './Fib';
 
 
 function App() {
