@@ -2,7 +2,7 @@ const keys = require('./keys');
 
 // Express app setup
 const express = require('express');
-const bodyParser = require('bodyParser');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
@@ -59,12 +59,11 @@ app.post('/values', async (req, res) => {
      return res.status(422).send('only indexes less than 40 are supported');
    }
 
-       redisClient.hset('values', index, 'Nothing yet!');
-       redisPublisher.publish('insert', index);
-       pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
+   redisClient.hset('values', index, 'Nothing yet!');
+   redisPublisher.publish('insert', index);
+   pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
 
-       res.send({ working: true });
-   }
+   res.send({ working: true });
 });
 
 app.listen(5000, err => {
