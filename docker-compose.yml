@@ -1,6 +1,17 @@
 version: "3"
 services:
   postgres:
-    image: "postgres:10.5"
+    image: "postgres:latest"
+    environment:
+      - POSTGRES_PASSWORD=postgres_password
   redis:
-    image: "redis:4"
+    image: "redis:latest"
+  server:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+#      bookmark /app/node_modeles, so inside container "/app/node_modules" will be directed to actual folder inside container
+      - /app/node_modules
+#      refer everything (except bookmarked folder) from container "/app" to local system's "/.server"
+      - ./server:/app
